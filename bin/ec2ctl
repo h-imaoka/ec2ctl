@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 require "ec2ctl"
 
-puts "OK"
+Ec2ctl::CLI.start ARGV

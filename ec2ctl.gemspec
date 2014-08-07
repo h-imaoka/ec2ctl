@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Ec2ctl::VERSION
   spec.authors       = ["y13i"]
   spec.email         = ["email@y13i.com"]
-  spec.summary       = %q{Start/Stop instances, remote command via ssh.}
-  spec.description   = %q{}
-  spec.homepage      = ""
+  spec.summary       = %q{Yet another handy EC2 tools.}
+  spec.description   = %q{Can start/stop instances, add/remove to load balancer, remote command via ssh.}
+  spec.homepage      = "https://github.com/y13i/ec2ctl"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
@@ -18,9 +18,12 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "aws-sdk"
   spec.add_dependency "thor"
+  spec.add_dependency "aws-sdk"
   spec.add_dependency "net-ssh"
+  spec.add_dependency "colorize"
+  spec.add_dependency "terminal-table"
+  spec.add_dependency "unindent"
 
   spec.add_development_dependency "bundler", "~> 1.5"
   spec.add_development_dependency "rake"
