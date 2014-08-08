@@ -25,12 +25,14 @@ module Ec2ctl
     class_option :profile
     class_option :color,             default: true,       type: :boolean
 
+    option :sort, default: name, aliases: [:S]
+    option :limit, type: :numeric, aliases: [:l]
     desc "list PATTERN", "List all instances in region. Specify PATTERN to filter results by name."
     def list pattern = ""
       rows = []
 
       ec2.instances.each do |instance|
-        name = instance.tags["Name"]
+        name = instance.tags["Name"].to_s
         next if !pattern.empty? and !name.match pattern
 
         rows << [
@@ -42,6 +44,18 @@ module Ec2ctl
           status_colorize(instance.status),
         ]
       end
+
+      col = case options[:sort]
+      when /ID/i      then 0
+      when /Name/i    then 1
+      when /Type/i    then 2
+      when /private/i then 3
+      when /public/i  then 4
+      when /status/i  then 5
+      end
+
+      rows.sort_by! {|row| row[col].to_s} if col
+      rows = rows[0, options[:limit]] if options[:limit]
 
       puts Terminal::Table.new headings: ["ID", "Name", "Type", "Private IP", "Public IP", "Status"], rows: rows
     end
