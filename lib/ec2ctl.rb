@@ -173,11 +173,11 @@ module Ec2ctl
     end
 
     def ec2
-      AWS::EC2.new aws_config
+      @ec2 ||= AWS::EC2.new aws_config
     end
 
     def elb
-      AWS::ELB.new aws_config
+      @elb ||= AWS::ELB.new aws_config
     end
 
     def status_colorize status
