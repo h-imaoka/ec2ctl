@@ -8,6 +8,7 @@ require "colorize"
 require "terminal-table"
 require "timeout"
 require "unindent"
+require "aws_config"
 
 module Ec2ctl
   class CLI < Thor
@@ -162,10 +163,17 @@ module Ec2ctl
       hash = {}
 
       if options[:profile]
-        provider = AWS::Core::CredentialProviders::SharedCredentialFileProvider.new profile_name: options[:profile]
-        hash.update credential_provider: provider
+        config = AWSConfig.profiles[options[:profile]]
+
+        if config
+          hash.update config.config_hash
+        else
+          provider = AWS::Core::CredentialProviders::SharedCredentialFileProvider.new profile_name: options[:profile]
+          hash.update credential_provider: provider
+        end
       else
-        hash.update access_key_id: options[:access_key_id], secret_access_key: options[:secret_access_key] if options[:access_key_id] && options[:secret_access_key]
+        hash.update access_key_id: options[:access_key_id] if options[:access_key_id]
+        hash.update secret_access_key: options[:secret_access_key] if options[:secret_access_key]
       end
 
       hash.update region: options[:region] if options[:region]
