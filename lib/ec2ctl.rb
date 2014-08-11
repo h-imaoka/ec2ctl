@@ -26,6 +26,11 @@ module Ec2ctl
     class_option :profile
     class_option :color,             default: true,       type: :boolean
 
+    desc "version", "Show ec2ctl gem version."
+    def version
+      puts VERSION
+    end
+
     option :sort, default: name, aliases: [:S]
     option :limit, type: :numeric, aliases: [:l]
     desc "list PATTERN", "List all instances in region. Specify PATTERN to filter results by name."
