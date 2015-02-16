@@ -1,7 +1,7 @@
 require "ec2ctl/version"
 
 require "thor"
-require "aws-sdk"
+require "aws-sdk-v1"
 require "net/ssh"
 require "net/http"
 require "colorize"
