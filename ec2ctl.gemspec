@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "thor"
-  spec.add_dependency "nokogiri", "1.5"
+  spec.add_dependency "nokogiri"
   spec.add_dependency "aws-sdk-v1"
   spec.add_dependency "aws-sdk"
   spec.add_dependency "net-ssh"
