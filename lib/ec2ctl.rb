@@ -166,6 +166,11 @@ module Ec2ctl
 
     private
 
+    def get_profile_name
+      profile_name = (options[:profile] == nil) ? "default" : options[:profile]
+      profile_name
+    end
+
     def aws_config
       hash = {}
 
