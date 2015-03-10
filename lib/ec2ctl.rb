@@ -2,6 +2,8 @@ require "ec2ctl/version"
 
 require "thor"
 require "aws-sdk-v1"
+require "aws-sdk"
+require "aws"
 require "net/ssh"
 require "net/http"
 require "colorize"
@@ -164,21 +166,24 @@ module Ec2ctl
 
     private
 
+    def get_profile_name
+      profile_name = (options[:profile] == nil) ? "default" : options[:profile]
+      profile_name
+    end
+
     def aws_config
       hash = {}
 
-      if options[:profile]
-        config = AWSConfig.profiles[options[:profile]]
-
-        if config
-          hash.update config.config_hash
-        else
-          provider = AWS::Core::CredentialProviders::SharedCredentialFileProvider.new profile_name: options[:profile]
-          hash.update credential_provider: provider
-        end
+      if options[:access_key_id] && options[:secret_access_key]
+        hash.update access_key_id: options[:access_key_id]
+        hash.update secret_access_key: options[:secret_access_key]
       else
-        hash.update access_key_id: options[:access_key_id] if options[:access_key_id]
-        hash.update secret_access_key: options[:secret_access_key] if options[:secret_access_key]
+        provider = AWS::Core::CredentialProviders::SharedCredentialFileProvider.new profile_name: get_profile_name
+        #config.update credential_provider: provider
+
+        # aws credential bug fix
+        hash = provider.get_credentials
+        hash[:access_key_id].strip!
       end
 
       hash.update region: options[:region] if options[:region]
