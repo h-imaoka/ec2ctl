@@ -1,4 +1,4 @@
-require "ec2ctl/version"
+#require "lib/ec2ctl/version"
 
 require "thor"
 require "aws-sdk-v1"
@@ -33,6 +33,7 @@ module Ec2ctl
       puts VERSION
     end
 
+    option :only, default: false
     option :sort, default: name, aliases: [:S]
     option :limit, type: :numeric, aliases: [:l]
     desc "list PATTERN", "List all instances in region. Specify PATTERN to filter results by name."
@@ -65,7 +66,11 @@ module Ec2ctl
       rows.sort_by! {|row| row[col].to_s} if col
       rows = rows[0, options[:limit]] if options[:limit]
 
-      puts Terminal::Table.new headings: ["ID", "Name", "Type", "Private IP", "Public IP", "Status"], rows: rows
+      unless options[:only]
+        puts Terminal::Table.new headings: ["ID", "Name", "Type", "Private IP", "Public IP", "Status"], rows: rows
+      else
+        rows.each { |r| puts r[col] }
+      end
     end
 
     desc "status NAME", "Show instance status. Instance will be searched by Name tag."
