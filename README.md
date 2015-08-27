@@ -33,7 +33,8 @@ Commands:
   ec2ctl start NAME            # Start instance. Instance will be searched by Name tag.
   ec2ctl status NAME           # Show instance status. Instance will be searched by Name tag.
   ec2ctl stop NAME             # Stop instance. Instance will be searched by Name tag.
-
+  ec2ctl reboot NAME           # Reboot instance. Instance will be searched by Name tag.
+  
 Options:
   k, [--access-key-id=ACCESS_KEY_ID]
   s, [--secret-access-key=SECRET_ACCESS_KEY]

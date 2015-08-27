@@ -107,6 +107,14 @@ module Ec2ctl
       puts "Instance is now #{status_colorize instance.status}."
     end
 
+    desc "reboot NAME", "Reboot instance. Instance will be searched by Name tag."
+    def reboot name
+      instance = find_instance_by_name name
+      abort "Instance is not running!" unless instance.status == :running
+      instance.reboot
+      sleep 2
+    end
+
     option :user,          default: "ec2-user",      aliases: [:u]
     option :port,          default: 22,              aliases: [:p]
     option :identity_file, default: "~/.ssh/id_rsa", aliases: [:i]
